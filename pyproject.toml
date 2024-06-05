@@ -7,19 +7,19 @@ requires-python = ">=3.8, <4.0"
 
 [tool.nonebot]
 adapters = [
-    { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" }
+    { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" },
 ]
 plugins = ["nonebot_plugin_mcsm"]
 
 [tool.poetry]
-name = "nonebot-plugin-valve-server-query"
-version = "0.5.5"
-description = "Valve server query plugin for NoneBot2"
+name = "nonebot-plugin-mcsm"
+version = "0.0.1"
+description = "MCSM plugin for NoneBot2"
 authors = ["LiLuo-B"]
 license = "GPLv3"
 readme = "README.md"
-repository = "https://github.com/LiLuo-B/nonebot-plugin-valve-server-query"
-documentation = "https://github.com/LiLuo-B/nonebot-plugin-valve-server-query/blob/main/README.md"
+repository = "https://github.com/LiLuo-B/nonebot-plugin-mcsm"
+documentation = "https://github.com/LiLuo-B/nonebot-plugin-mcsm/blob/main/README.md"
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 nonebot2 = ">=2.2.0"
