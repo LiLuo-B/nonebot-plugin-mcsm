@@ -27,4 +27,4 @@ async def get_node_list():
             print(data)
             await show_node_list.finish()
         else:
-            raise Exception(f"请求失败，状态码: {response.status_code}")
+            await show_node_list.finish("异常")
