@@ -22,6 +22,7 @@ async def _():
     print(nodes.online_node)
     print(nodes.total_node)
     for node in nodes.remote_nodes:
+        print(node.index)
         print(node.daemon_id)
         print(node.cpu_usage)
 

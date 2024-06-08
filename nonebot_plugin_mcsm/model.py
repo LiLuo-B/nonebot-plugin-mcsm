@@ -2,6 +2,7 @@ from typing import Optional, List
 
 
 class Remote_Node:
+    index: int
     connection_address: str
     status: bool
     cpu_usage: Optional[str] = None
@@ -14,7 +15,8 @@ class Remote_Node:
     platform: Optional[str] = None
     version: Optional[str] = None
 
-    def __init__(self, data: dict):
+    def __init__(self, index: int, data: dict):
+        self.index = index
         self.connection_address = f"{data['ip']}:{data['port']}"
         self.status = data["available"]
         self.daemon_id = data["uuid"]
@@ -41,7 +43,10 @@ class Panel_Info:
     def __init__(self, data: dict):
         self.total_node = data["remoteCount"]["total"]
         self.online_node = data["remoteCount"]["available"]
-        self.remote_nodes = [Remote_Node(node_data) for node_data in data["remote"]]
+        self.remote_nodes = [
+            Remote_Node(index + 1, node_data)
+            for index, node_data in enumerate(data["remote"])
+        ]
 
 
 class Instance_Info:
