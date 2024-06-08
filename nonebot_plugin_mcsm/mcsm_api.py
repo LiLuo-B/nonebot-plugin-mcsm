@@ -19,10 +19,10 @@ async def get_node_list() -> Union[Panel_Info, int]:
         return response.status_code
 
 
-async def get_instance_list():
+async def get_instance_list(daemonid:str):
     url = f"{panel_address}/api/service/remote_service_instances"
     params = {
-        "daemonId": "6e86759de96d4d04a73e89b059aa00d0",
+        "daemonId": daemonid,
         "page": 1,
         "page_size": 100,
         "apikey": plugin_config.mcsm_api_key,

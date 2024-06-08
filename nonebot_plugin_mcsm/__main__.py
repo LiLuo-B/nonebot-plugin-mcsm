@@ -18,7 +18,12 @@ show_instance_list = on_command("实例列表", permission=SUPERUSER)
 @show_node_list.handle()
 async def _():
     nodes = await get_node_list()
-
+    print(nodes)
+    print(nodes.online_node)
+    print(nodes.total_node)
+    for node in nodes.remote_nodes:
+        print(node.daemon_id)
+        print(node.cpu_usage)
 
 @show_instance_list.handle()
 async def _():
