@@ -7,7 +7,7 @@ panel_address = plugin_config.mcsm_url.rstrip("/")
 api_key = plugin_config.mcsm_api_key
 headers = {"Content-Type": "application/json; charset=utf-8"}
 
-
+# 获取节点列表
 async def get_node_list() -> Union[Panel_Info, int]:
     url = f"{panel_address}/api/overview"
     params = {"apikey": plugin_config.mcsm_api_key}
@@ -18,7 +18,7 @@ async def get_node_list() -> Union[Panel_Info, int]:
             return Panel_Info(data["data"])
         return response.status_code
 
-
+# 获取实例列表
 async def get_instance_list(daemonid:str):
     url = f"{panel_address}/api/service/remote_service_instances"
     params = {
