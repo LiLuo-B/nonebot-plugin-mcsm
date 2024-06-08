@@ -1,4 +1,4 @@
-async def get_error_message(status_code: int) -> str:
+def get_error_message(status_code: int) -> str:
     if status_code == 400:
         return "请求参数不正确"
     elif status_code == 403:
