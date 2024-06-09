@@ -52,7 +52,7 @@ class Panel_Info:
 
 
 class Instance_Info:
-    index: int
+    index: Optional[int]
     instance_name: str
     instance_id: str
     instance_status: int
@@ -61,12 +61,12 @@ class Instance_Info:
     update_command: str
     instance_path: str
     last_run_time: str
-    run_time: str
-    cpu_usage: str
-    memory_usage: float
-    pid: int
+    run_time: Optional[str] = None
+    cpu_usage: Optional[str] = None
+    memory_usage: Optional[float] = None
+    pid: Optional[int] = None
 
-    def __init__(self, index: int, data: dict):
+    def __init__(self, detail: bool, data: dict, index: int = -1):
         self.index = index
         self.instance_name = data["config"]["nickname"]
         self.instance_id = data["instanceUuid"]
@@ -79,9 +79,12 @@ class Instance_Info:
             "%Y-%m-%d  %H:%M:%S",
             time.localtime(data["config"]["lastDatetime"] / 1000),
         )
-        self.run_time = timedelta(seconds=int(data["processInfo"]["elapsed"] / 1000))
-        self.cpu_usage = "{:.1f}%".format(data["processInfo"]["cpu"] * 100)
-        self.memory_usage = (
-            round(data["processInfo"]["memory"] / 1024 / 1024 / 1024 * 10, 1) / 10
-        )
-        self.pid = data["processInfo"]["pid"]
+        if detail == True:
+            self.run_time = timedelta(
+                seconds=int(data["processInfo"]["elapsed"] / 1000)
+            )
+            self.cpu_usage = "{:.1f}%".format(data["processInfo"]["cpu"] * 100)
+            self.memory_usage = (
+                round(data["processInfo"]["memory"] / 1024 / 1024 / 1024 * 10, 1) / 10
+            )
+            self.pid = data["processInfo"]["pid"]
