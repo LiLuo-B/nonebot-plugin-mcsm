@@ -18,14 +18,13 @@ show_instance_list = on_command("实例列表", permission=SUPERUSER)
 @show_node_list.handle()
 async def _():
     nodes = await get_node_list()
-    print(nodes)
-    print(nodes.online_node)
-    print(nodes.total_node)
     for node in nodes.remote_nodes:
-        print(node.index)
-        print(node.daemon_id)
-        print(node.cpu_usage)
+        await show_node_list.send(
+            f"序号：{node.index}，名称：{node.remark}，是否在线：{node.status}"
+        )
+    await show_node_list.finish()
+
 
 @show_instance_list.handle()
-async def _():
+async def _(args: Message = CommandArg()):
     await get_instance_list()
