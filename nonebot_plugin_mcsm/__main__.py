@@ -3,6 +3,7 @@ from nonebot.params import CommandArg, CommandStart, RawCommand
 from nonebot.permission import SUPERUSER
 from nonebot.adapters.onebot.v11 import (
     MessageSegment,
+    MessageEvent,
     Event,
     NoticeEvent,
     PrivateMessageEvent,
@@ -10,6 +11,7 @@ from nonebot.adapters.onebot.v11 import (
 )
 from nonebot.adapters.onebot.v11.message import Message
 from .mcsm_api import get_node_list, get_instance_list
+from .utils import get_index
 
 show_node_list = on_command("节点列表", permission=SUPERUSER)
 show_instance_list = on_command("实例列表", permission=SUPERUSER)
@@ -27,4 +29,16 @@ async def _():
 
 @show_instance_list.handle()
 async def _(args: Message = CommandArg()):
-    await get_instance_list()
+    if args := args.extract_plain_text():
+        index = get_index(args)
+        if index != None:
+            await show_instance_list.finish()
+    await show_instance_list.pause("请输入节点ID")
+
+
+@show_instance_list.handle()
+async def _(event: MessageEvent):
+    index = get_index(str(event.message))
+    if index != None:
+        await show_instance_list.finish()
+    await show_instance_list.finish("参数错误，已退出流程")
