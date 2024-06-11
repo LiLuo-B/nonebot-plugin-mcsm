@@ -19,7 +19,6 @@ class Node_Info:
 
     def __init__(self, index: int, data: dict):
         self.index = index
-        print(data)
         self.connection_address = f"{data['ip']}:{data['port']}"
         self.status = data["available"]
         self.daemon_id = data["uuid"]
