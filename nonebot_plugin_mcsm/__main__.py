@@ -32,7 +32,18 @@ async def _(args: Message = CommandArg()):
     if args := args.extract_plain_text():
         index = get_index(args)
         if index != None:
-            await show_instance_list.finish()
+            nodes = await get_node_list()
+            for node in nodes.remote_nodes:
+                if index == node.index:
+                    instances = await get_instance_list(node.daemon_id)
+                    if isinstance(instances, int):
+                        await show_instance_list.finish(f"查询失败，返回码{instances}")
+                    for instance in instances:
+                        await show_instance_list.send(
+                            f"序号：{instance.index} 备注：{instance.instance_name} 状态：{instance.instance_status} 启动命令：{instance.start_command} 停止命令：{instance.stop_command} 更新命令：{instance.update_command}"
+                        )
+                    await show_instance_list.finish()
+            await show_instance_list.finish("没查到该ID对应的节点")
     await show_instance_list.pause("请输入节点ID")
 
 
@@ -40,5 +51,16 @@ async def _(args: Message = CommandArg()):
 async def _(event: MessageEvent):
     index = get_index(str(event.message))
     if index != None:
-        await show_instance_list.finish()
+        nodes = await get_node_list()
+        for node in nodes.remote_nodes:
+            if index == node.index:
+                instances = await get_instance_list(node.daemon_id)
+                if isinstance(instances, int):
+                    await show_instance_list.finish(f"查询失败，返回码{instances}")
+                for instance in instances:
+                    await show_instance_list.send(
+                        f"序号：{instance.index} 备注：{instance.instance_name} 状态：{instance.instance_status} 启动命令：{instance.start_command} 停止命令：{instance.stop_command} 更新命令：{instance.update_command}"
+                    )
+                await show_instance_list.finish()
+        await show_instance_list.finish("没查到该ID对应的节点")
     await show_instance_list.finish("参数错误，已退出流程")

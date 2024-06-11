@@ -54,9 +54,8 @@ async def get_instance_list(daemonid: str) -> Union[List[Instance_Info], int]:
         response = await client.get(url, headers=headers, params=params)
         data = response.json()
         if response.status_code == 200:
-            return List[
-                Instance_Info(
-                    detail=False, data=[instance for instance in data["data"]]
-                )
+            return [
+                Instance_Info(detail=False, data=instance, index=index + 1)
+                for index, instance in enumerate(data["data"]["data"])
             ]
         return response.status_code
