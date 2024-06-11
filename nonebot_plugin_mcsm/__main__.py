@@ -20,7 +20,9 @@ show_instance_list = on_command("实例列表", permission=SUPERUSER)
 @show_node_list.handle()
 async def _():
     nodes = await get_node_list()
-    for node in nodes.remote_nodes:
+    if isinstance(nodes, int):
+        await show_node_list.finish(f"查询失败,错误码{nodes}")
+    for node in nodes:
         await show_node_list.send(
             f"序号：{node.index}，名称：{node.remark}，是否在线：{node.status}"
         )

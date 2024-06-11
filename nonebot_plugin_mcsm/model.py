@@ -3,7 +3,7 @@ from datetime import timedelta
 import time
 
 
-class Remote_Node:
+class Node_Info:
     index: int
     connection_address: str
     status: bool
@@ -19,6 +19,7 @@ class Remote_Node:
 
     def __init__(self, index: int, data: dict):
         self.index = index
+        print(data)
         self.connection_address = f"{data['ip']}:{data['port']}"
         self.status = data["available"]
         self.daemon_id = data["uuid"]
@@ -37,18 +38,18 @@ class Remote_Node:
             self.version = data["version"]
 
 
-class Panel_Info:
-    total_node: int
-    online_node: int
-    remote_nodes: List[Optional[Remote_Node]]
+# class Panel_Info:
+#     total_node: int
+#     online_node: int
+#     remote_nodes: List[Optional[Remote_Node]]
 
-    def __init__(self, data: dict):
-        self.total_node = data["remoteCount"]["total"]
-        self.online_node = data["remoteCount"]["available"]
-        self.remote_nodes = [
-            Remote_Node(index + 1, node_data)
-            for index, node_data in enumerate(data["remote"])
-        ]
+#     def __init__(self, data: dict):
+#         self.total_node = data["remoteCount"]["total"]
+#         self.online_node = data["remoteCount"]["available"]
+#         self.remote_nodes = [
+#             Remote_Node(index + 1, node_data)
+#             for index, node_data in enumerate(data["remote"])
+#         ]
 
 
 class Instance_Info:

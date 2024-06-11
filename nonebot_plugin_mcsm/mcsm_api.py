@@ -2,7 +2,7 @@ import asyncio
 import httpx
 from typing import Union, List
 from .config import plugin_config
-from .model import Panel_Info, Instance_Info
+from .model import Node_Info, Instance_Info
 
 panel_address = plugin_config.mcsm_url.rstrip("/")
 api_key = plugin_config.mcsm_api_key
@@ -10,14 +10,17 @@ headers = {"Content-Type": "application/json; charset=utf-8"}
 
 
 # 获取节点列表
-async def get_node_list() -> Union[Panel_Info, int]:
+async def get_node_list() -> Union[List[Node_Info], int]:
     url = f"{panel_address}/api/overview"
     params = {"apikey": plugin_config.mcsm_api_key}
     async with httpx.AsyncClient() as client:
         response = await client.get(url, headers=headers, params=params)
         data = response.json()
         if response.status_code == 200:
-            return Panel_Info(data["data"])
+            return [
+                Node_Info(index=index + 1, data=node)
+                for index, node in enumerate(data["data"]["remote"])
+            ]
         return response.status_code
 
 
