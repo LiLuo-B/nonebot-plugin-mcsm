@@ -22,12 +22,12 @@ def get_index(arg: str) -> Optional[int]:
 # 将用户传递的参数提取前两个并判断是否为id
 def get_indexs(arg: str) -> Union[None, int, Tuple[int, int]]:
     arg = arg.split()
-    daemon_index = arg[0]
-    if daemon_index.isdigit():
+    node_index = arg[0]
+    if node_index.isdigit():
         if len(arg) == 2:
             instance_index = arg[1]
             if instance_index.isdigit():
-                return daemon_index, instance_index
+                return int(node_index), int(instance_index)
         else:
-            return daemon_index
+            return int(node_index)
     return None
