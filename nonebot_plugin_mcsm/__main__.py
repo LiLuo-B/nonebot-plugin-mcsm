@@ -15,6 +15,10 @@ from .utils import get_index
 
 show_node_list = on_command("节点列表", permission=SUPERUSER)
 show_instance_list = on_command("实例列表", permission=SUPERUSER)
+start_instance = on_command("实例启动", permission=SUPERUSER)
+stop_instance = on_command("实例关闭", permission=SUPERUSER)
+restart_instance = on_command("实例重启", permission=SUPERUSER)
+kill_instance = on_command("实例终止", permission=SUPERUSER)
 
 
 @show_node_list.handle()

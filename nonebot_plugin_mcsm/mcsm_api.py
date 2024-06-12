@@ -1,6 +1,6 @@
 import asyncio
 import httpx
-from typing import Union, List
+from typing import Union, List, Tuple
 from .config import plugin_config
 from .model import Node_Info, Instance_Info
 
@@ -62,3 +62,59 @@ async def get_instance_list(daemonid: str) -> Union[List[Instance_Info], int]:
                 for index, instance in enumerate(data["data"]["data"])
             ]
         return response.status_code
+
+
+# 启动实例
+async def start_instance(daemonid: str, instanceid: str) -> Tuple[int, str]:
+    url = f"{panel_address}/api/protected_instance/open"
+    params = {
+        "uuid": instanceid,
+        "daemonId": daemonid,
+        "apikey": plugin_config.mcsm_api_key,
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=headers, params=params)
+        data = response.json()
+    return response.status_code, data
+
+
+# 关闭实例
+async def stop_instance(daemonid: str, instanceid: str) -> Tuple[int, str]:
+    url = f"{panel_address}/api/protected_instance/stop"
+    params = {
+        "uuid": instanceid,
+        "daemonId": daemonid,
+        "apikey": plugin_config.mcsm_api_key,
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=headers, params=params)
+        data = response.json()
+    return response.status_code, data
+
+
+# 终止实例
+async def kill_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
+    url = f"{panel_address}/api/protected_instance/kill"
+    params = {
+        "uuid": instanceid,
+        "daemonId": daemonid,
+        "apikey": plugin_config.mcsm_api_key,
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=headers, params=params)
+        data = response.json()
+    return response.status_code, data
+
+
+# 重启实例
+async def restart_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
+    url = f"{panel_address}/api/protected_instance/restart"
+    params = {
+        "uuid": instanceid,
+        "daemonId": daemonid,
+        "apikey": plugin_config.mcsm_api_key,
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=headers, params=params)
+        data = response.json()
+    return response.status_code, data
