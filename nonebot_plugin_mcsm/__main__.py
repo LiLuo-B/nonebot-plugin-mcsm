@@ -1,6 +1,7 @@
 from nonebot import on_command, on_message, on_notice
-from nonebot.params import CommandArg, CommandStart, RawCommand
+from nonebot.params import CommandArg, CommandStart, RawCommand, ArgStr
 from nonebot.permission import SUPERUSER
+from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import (
     MessageSegment,
     MessageEvent,
@@ -130,16 +131,54 @@ async def _(args: Message = CommandArg()):
             await instance_start.finish(f"实例查询失败，错误码{instances}")
         # 若用户提供了两个参数则查询对应实例列表并判断
         if instance_index == -1:
-            await instance_start.pause("请输入实例ID")
+            await instance_start.finish("参数错误")
         for instance in instances:
             # 若成功匹配实例index则调用启动函数
             if instance_index != instance.index:
                 continue
+            await instance_start.send("指令已发送")
             return_code, return_text = await start_instance(
                 node.daemon_id, instance.instance_id
             )
             if return_code == 200:
                 await instance_start.finish("启动成功")
-            await instance_start.finish({return_text})
+            await instance_start.finish(return_text)
         await instance_start.finish("未查到该ID对应的实例")
     await instance_start.finish("未查到该ID对应的节点")
+
+
+@instance_start.handle()
+async def _(state: T_State, event: MessageEvent):
+    node_index = get_index(str(event.message))
+    # 用户参数为节点ID
+    if not isinstance(node_index, int):
+        await instance_start.finish("参数错误")
+    nodes = await get_node_list()
+    if isinstance(nodes, int):
+        await instance_start.finish(f"节点查询失败，错误码{nodes}")
+    for node in nodes:
+        if node_index != node.index:
+            continue
+        state.update({"node_id": node.daemon_id})
+        await instance_start.pause("请输入实例ID")
+    await instance_start.finish("未查到该ID对应的节点")
+
+
+@instance_start.got("node_id")
+async def _(state: T_State, event: MessageEvent):
+    instance_index = get_index(str(event.message))
+    # 用户参数为实例ID
+    if not isinstance(instance_index, int):
+        await instance_start.finish("参数错误")
+    daemon_id = state["node_id"]
+    instances = await get_instance_list(daemon_id)
+    if isinstance(instances, int):
+        await instance_start.finish(f"实例查询失败，错误码{instances}")
+    for instance in instances:
+        if instance_index != instance.index:
+            continue
+        return_code, return_text = await start_instance(daemon_id, instance.instance_id)
+        if return_code == 200:
+            await instance_start.finish("启动成功")
+        await instance_start.finish(return_text)
+    await instance_start.finish("为查到该ID对应的实例")
