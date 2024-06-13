@@ -118,3 +118,18 @@ async def restart_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
         response = await client.get(url, headers=headers, params=params)
         data = response.json()
     return response.status_code, data["data"]
+
+
+# 更新实例 返回返回码与文本
+async def update_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
+    url = f"{panel_address}/api/protected_instance/asynchronous"
+    params = {
+        "uuid": instanceid,
+        "daemonId": daemonid,
+        "task_name": "update",
+        "apikey": plugin_config.mcsm_api_key,
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url, headers=headers, params=params)
+        data = response.json()
+    return response.status_code, data["data"]
