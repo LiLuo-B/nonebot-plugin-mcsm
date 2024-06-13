@@ -177,8 +177,91 @@ async def _(state: T_State, event: MessageEvent):
     for instance in instances:
         if instance_index != instance.index:
             continue
+        await instance_start.send("指令已发送")
         return_code, return_text = await start_instance(daemon_id, instance.instance_id)
         if return_code == 200:
             await instance_start.finish("启动成功")
         await instance_start.finish(return_text)
-    await instance_start.finish("为查到该ID对应的实例")
+    await instance_start.finish("未查到该ID对应的实例")
+
+
+@instance_stop.handle()
+async def _(args: Message = CommandArg()):
+    # 提取响应参数
+    args = args.extract_plain_text()
+    if args == "":
+        await instance_stop.pause("请输入节点ID")
+    index = get_indexs(args)
+    if index == None:
+        await instance_stop.finish("参数错误")
+    # 正常返回对象，异常返回int
+    nodes = await get_node_list()
+    if isinstance(nodes, int):
+        await instance_stop.finish(f"节点查询失败，错误码{nodes}")
+    # 提取index，如果用户只提供了一个参数则返回node_index，instance_index为-1
+    if isinstance(index, tuple):
+        node_index, instance_index = index
+    else:
+        node_index = index
+        instance_index = -1
+    # 遍历节点列表查询index对应的节点daemon_id
+    for node in nodes:
+        if node_index != node.index:
+            continue
+        # 获取对应节点的实例列表
+        instances = await get_instance_list(node.daemon_id)
+        if isinstance(instances, int):
+            await instance_stop.finish(f"实例查询失败，错误码{instances}")
+        # 若用户提供了两个参数则查询对应实例列表并判断
+        if instance_index == -1:
+            await instance_stop.finish("参数错误")
+        for instance in instances:
+            # 若成功匹配实例index则调用关闭函数
+            if instance_index != instance.index:
+                continue
+            await instance_stop.send("指令已发送")
+            return_code, return_text = await stop_instance(
+                node.daemon_id, instance.instance_id
+            )
+            if return_code == 200:
+                await instance_stop.finish("关闭成功")
+            await instance_stop.finish(return_text)
+        await instance_stop.finish("未查到该ID对应的实例")
+    await instance_stop.finish("未查到该ID对应的节点")
+
+
+@instance_stop.handle()
+async def _(state: T_State, event: MessageEvent):
+    node_index = get_index(str(event.message))
+    # 用户参数为节点ID
+    if not isinstance(node_index, int):
+        await instance_stop.finish("参数错误")
+    nodes = await get_node_list()
+    if isinstance(nodes, int):
+        await instance_stop.finish(f"节点查询失败，错误码{nodes}")
+    for node in nodes:
+        if node_index != node.index:
+            continue
+        state.update({"node_id": node.daemon_id})
+        await instance_stop.pause("请输入实例ID")
+    await instance_stop.finish("未查到该ID对应的节点")
+
+
+@instance_stop.got("node_id")
+async def _(state: T_State, event: MessageEvent):
+    instance_index = get_index(str(event.message))
+    # 用户参数为实例ID
+    if not isinstance(instance_index, int):
+        await instance_stop.finish("参数错误")
+    daemon_id = state["node_id"]
+    instances = await get_instance_list(daemon_id)
+    if isinstance(instances, int):
+        await instance_stop.finish(f"实例查询失败，错误码{instances}")
+    for instance in instances:
+        if instance_index != instance.index:
+            continue
+        return_code, return_text = await stop_instance(daemon_id, instance.instance_id)
+        if return_code == 200:
+            await instance_stop.finish("关闭成功")
+        await instance_stop.finish(return_text)
+    await instance_stop.finish("为查到该ID对应的实例")
