@@ -6,7 +6,8 @@ from nonebot import get_plugin_config
 class Config(BaseModel):
     mcsm_path: str = Path.cwd() / "data/mcsm"
     mcsm_api_key: str
-    mcsm_url:str
+    mcsm_url: str
+    mcsm_log_size: int
 
 
 plugin_config = get_plugin_config(Config)

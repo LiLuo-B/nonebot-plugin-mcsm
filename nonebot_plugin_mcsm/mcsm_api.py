@@ -133,3 +133,18 @@ async def update_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
         response = await client.post(url, headers=headers, params=params)
         data = response.json()
     return response.status_code, data["data"]
+
+
+# 获取实例日志 返回返回码与文本
+async def get_instance_logs(daemonid: str, instanceid: str) -> Tuple[bool, int]:
+    url = f"{panel_address}/api/protected_instance/outputlog"
+    params = {
+        "uuid": instanceid,
+        "daemonId": daemonid,
+        "size": plugin_config.mcsm_log_size,
+        "apikey": plugin_config.mcsm_api_key,
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=headers, params=params)
+        data = response.json()
+    return response.status_code, data["data"]
