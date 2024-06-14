@@ -14,6 +14,7 @@ from nonebot.adapters.onebot.v11.message import Message
 from .mcsm_api import (
     get_node_list,
     get_instance_list,
+    get_instance_info,
     start_instance,
     stop_instance,
     kill_instance,
@@ -25,6 +26,7 @@ from .utils import get_index, get_indexs
 
 node_show_list = on_command("节点列表", permission=SUPERUSER)
 instance_show_list = on_command("实例列表", permission=SUPERUSER)
+instance_info = on_command("实例详情", permission=SUPERUSER)
 instance_start = on_command("实例启动", permission=SUPERUSER)
 instance_stop = on_command("实例关闭", permission=SUPERUSER)
 instance_restart = on_command("实例重启", permission=SUPERUSER)
@@ -106,6 +108,87 @@ async def _(event: MessageEvent):
     await instance_show_list.finish("未查到该ID对应的节点")
 
 
+# 获取实例信息
+@instance_info.handle()
+async def _(args: Message = CommandArg()):
+    # 提取响应参数
+    args = args.extract_plain_text()
+    if args == "":
+        await instance_info.pause("请输入节点ID")
+    index = get_indexs(args)
+    if index == None:
+        await instance_info.finish("参数错误")
+    # 正常返回对象，异常返回int
+    nodes = await get_node_list()
+    if isinstance(nodes, int):
+        await instance_info.finish(f"节点查询失败，错误码{nodes}")
+    # 提取index，如果用户只提供了一个参数则返回node_index，instance_index为-1
+    if isinstance(index, tuple):
+        node_index, instance_index = index
+    else:
+        node_index = index
+        instance_index = -1
+    # 遍历节点列表查询index对应的节点daemon_id
+    for node in nodes:
+        if node_index != node.index:
+            continue
+        # 获取对应节点的实例列表
+        instances = await get_instance_list(node.daemon_id)
+        if isinstance(instances, int):
+            await instance_info.finish(f"实例查询失败，错误码{instances}")
+        # 若用户提供了两个参数则查询对应实例列表并判断
+        if instance_index == -1:
+            await instance_info.finish("参数错误")
+        for instance in instances:
+            # 若成功匹配实例index则调用实例详情获取函数
+            if instance_index != instance.index:
+                continue
+            instance = await get_instance_info(node.daemon_id, instance.instance_id)
+            if isinstance(instance, int):
+                await instance_info.finish(f"查询失败，返回码{instance}")
+            await instance_info.finish(f"实例信息：{instance.last_run_time}")
+        await instance_info.finish("未查到该ID对应的实例")
+    await instance_info.finish("未查到该ID对应的节点")
+
+
+@instance_info.handle()
+async def _(state: T_State, event: MessageEvent):
+    node_index = get_index(str(event.message))
+    # 用户参数为节点ID
+    if not isinstance(node_index, int):
+        await instance_info.finish("参数错误")
+    nodes = await get_node_list()
+    if isinstance(nodes, int):
+        await instance_info.finish(f"节点查询失败，错误码{nodes}")
+    for node in nodes:
+        if node_index != node.index:
+            continue
+        state.update({"node_id": node.daemon_id})
+        await instance_info.pause("请输入实例ID")
+    await instance_info.finish("未查到该ID对应的节点")
+
+
+@instance_info.got("node_id")
+async def _(state: T_State, event: MessageEvent):
+    instance_index = get_index(str(event.message))
+    # 用户参数为实例ID
+    if not isinstance(instance_index, int):
+        await instance_info.finish("参数错误")
+    daemon_id = state["node_id"]
+    instances = await get_instance_list(daemon_id)
+    if isinstance(instances, int):
+        await instance_info.finish(f"实例查询失败，错误码{instances}")
+    for instance in instances:
+        if instance_index != instance.index:
+            continue
+        instance = await get_instance_info(daemon_id, instance.instance_id)
+        if isinstance(instance, int):
+            await instance_info.finish(f"查询失败，返回码{instance}")
+        await instance_info.finish(f"实例信息：{instance.last_run_time}")
+    await instance_info.finish("未查到该ID对应的实例")
+
+
+# 启动实例
 @instance_start.handle()
 async def _(args: Message = CommandArg()):
     # 提取响应参数
@@ -189,6 +272,7 @@ async def _(state: T_State, event: MessageEvent):
     await instance_start.finish("未查到该ID对应的实例")
 
 
+# 停止实例
 @instance_stop.handle()
 async def _(args: Message = CommandArg()):
     # 提取响应参数
@@ -271,6 +355,7 @@ async def _(state: T_State, event: MessageEvent):
     await instance_stop.finish("未查到该ID对应的实例")
 
 
+# 重启实例
 @instance_restart.handle()
 async def _(args: Message = CommandArg()):
     # 提取响应参数
@@ -355,6 +440,7 @@ async def _(state: T_State, event: MessageEvent):
     await instance_restart.finish("未查到该ID对应的实例")
 
 
+# 终止实例
 @instance_kill.handle()
 async def _(args: Message = CommandArg()):
     # 提取响应参数
@@ -437,6 +523,7 @@ async def _(state: T_State, event: MessageEvent):
     await instance_kill.finish("未查到该ID对应的实例")
 
 
+# 更新实例
 @instance_update.handle()
 async def _(args: Message = CommandArg()):
     # 提取响应参数
@@ -520,6 +607,7 @@ async def _(state: T_State, event: MessageEvent):
     await instance_update.finish("未查到该ID对应的实例")
 
 
+# 实例日志获取
 @instance_logs.handle()
 async def _(args: Message = CommandArg()):
     # 提取响应参数
