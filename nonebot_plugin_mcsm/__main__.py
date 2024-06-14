@@ -12,6 +12,7 @@ from nonebot.adapters.onebot.v11 import (
 )
 from nonebot.adapters.onebot.v11.message import Message
 from .mcsm_api import (
+    get_panel_info,
     get_node_list,
     get_instance_list,
     get_instance_info,
@@ -24,6 +25,7 @@ from .mcsm_api import (
 )
 from .utils import get_index, get_indexs
 
+panel_info = on_command("面板信息", permission=SUPERUSER)
 node_show_list = on_command("节点列表", permission=SUPERUSER)
 instance_show_list = on_command("实例列表", permission=SUPERUSER)
 instance_info = on_command("实例详情", permission=SUPERUSER)
@@ -33,6 +35,18 @@ instance_restart = on_command("实例重启", permission=SUPERUSER)
 instance_kill = on_command("实例终止", permission=SUPERUSER)
 instance_update = on_command("实例更新", permission=SUPERUSER)
 instance_logs = on_command("实例日志", permission=SUPERUSER)
+
+
+# 获取面板信息
+@panel_info.handle()
+async def _():
+    panel = await get_panel_info()
+    # 正常返回对象，异常返回int
+    if isinstance(panel, int):
+        await node_show_list.finish(f"节点查询失败,错误码{panel}")
+    await node_show_list.finish(
+        f"面板版本：{panel.panel_version} Node版本:{panel.system_node_version}"
+    )
 
 
 # 获取节点列表

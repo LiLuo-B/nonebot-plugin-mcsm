@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from datetime import timedelta
 import time
 
@@ -37,18 +37,56 @@ class Node_Info:
             self.version = data["version"]
 
 
-# class Panel_Info:
-#     total_node: int
-#     online_node: int
-#     remote_nodes: List[Optional[Remote_Node]]
+class Panel_Info:
+    panel_version: str
+    panel_cpu_usage: str
+    panel_memory_usage: str
+    system_cpu_usage: str
+    system_memory_usage: str
+    system_memory_total:str
+    system_type: str
+    system_daemon_version: str
+    system_version: str
+    system_node_version: str
+    system_host_name: str
+    system_user_name: str
+    system_time: str
+    system_run_time: str
+    node_total_count:int
+    node_online_count:int
+    instance_total_count:int
+    instance_online_count:int
 
-#     def __init__(self, data: dict):
-#         self.total_node = data["remoteCount"]["total"]
-#         self.online_node = data["remoteCount"]["available"]
-#         self.remote_nodes = [
-#             Remote_Node(index + 1, node_data)
-#             for index, node_data in enumerate(data["remote"])
-#         ]
+
+    def __init__(self, data: dict):
+        self.panel_version = data["version"]
+        self.panel_cpu_usage = "{:.1f}%".format(data["process"]["cpu"] * 100)
+        self.panel_memory_usage = (
+            f"{round(data['process']['memory'] / 1024 / 1024 * 10, 1) / 10}MB"
+        )
+        self.system_cpu_usage="{:.1f}%".format(data["system"]["cpu"] * 100)
+        self.system_memory_usage="{:.1f}G".format((data["system"]["totalmem"]-data["system"]["freemem"])/1024/1024/1024)
+        self.system_memory_total="{:.1f}G".format(data["system"]["totalmem"]/1024/1024/1024)
+        self.system_type=f"{data['system']['type']} {data['system']['platform']}"
+        self.system_daemon_version=data["specifiedDaemonVersion"]
+        self.system_version=f"{data['system']['version']} {data['system']['release']}"
+        self.system_node_version=data["system"]["node"]
+        self.system_host_name=data["system"]["hostname"]
+        self.system_user_name=data["system"]["user"]["username"]
+        self.system_time=time.strftime(
+            "%Y/%m/%d  %H:%M:%S",
+            time.localtime(data["system"]["time"] / 1000),
+        )
+        self.system_run_time=timedelta(seconds=int(data["system"]["uptime"] ))
+        self.node_online_count=data["remoteCount"]["available"]
+        self.node_total_count=data["remoteCount"]["total"]
+        online_count=0
+        total_count=0
+        for instance in data["remote"]:
+            online_count+=instance["instance"]["running"]
+            total_count+=instance["instance"]["total"]
+        self.instance_online_count = sum(instance["instance"]["running"] for instance in data["remote"])
+        self.instance_total_count = sum(instance["instance"]["total"] for instance in data["remote"])
 
 
 class Instance_Info:
