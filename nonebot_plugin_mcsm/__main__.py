@@ -1,14 +1,10 @@
-from nonebot import on_command, on_message, on_notice
-from nonebot.params import CommandArg, CommandStart, RawCommand, ArgStr
+from nonebot import on_command
+from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.typing import T_State
 from nonebot.adapters.onebot.v11 import (
     MessageSegment,
     MessageEvent,
-    Event,
-    NoticeEvent,
-    PrivateMessageEvent,
-    Bot,
 )
 from nonebot.adapters.onebot.v11.message import Message
 from .mcsm_api import (
@@ -23,7 +19,7 @@ from .mcsm_api import (
     update_instance,
     get_instance_logs,
 )
-from .image import panel_info_img
+from .image import panel_info_img,node_info_img
 from .utils import get_index, get_indexs
 
 panel_info = on_command("面板信息", permission=SUPERUSER)
@@ -56,11 +52,8 @@ async def _():
     # 正常返回对象，异常返回int
     if isinstance(nodes, int):
         await node_show_list.finish(f"节点查询失败,错误码{nodes}")
-    for node in nodes:
-        await node_show_list.send(
-            f"序号：{node.index}，名称：{node.remark}，是否在线：{node.status}"
-        )
-    await node_show_list.finish()
+    img=await node_info_img(nodes)
+    await node_show_list.finish(MessageSegment.image(img))
 
 
 # 获取实例列表

@@ -92,16 +92,15 @@ class Panel_Info:
         self.system_run_time = timedelta(seconds=int(data["system"]["uptime"]))
         self.node_online_count = data["remoteCount"]["available"]
         self.node_total_count = data["remoteCount"]["total"]
-        online_count = 0
-        total_count = 0
-        for instance in data["remote"]:
-            online_count += instance["instance"]["running"]
-            total_count += instance["instance"]["total"]
         self.instance_online_count = sum(
-            instance["instance"]["running"] for instance in data["remote"]
+            node["instance"]["running"]
+            for node in data["remote"]
+            if node["available"] == True
         )
         self.instance_total_count = sum(
-            instance["instance"]["total"] for instance in data["remote"]
+            node["instance"]["total"]
+            for node in data["remote"]
+            if node["available"] == True
         )
 
 
