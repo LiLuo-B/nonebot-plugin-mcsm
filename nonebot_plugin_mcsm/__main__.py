@@ -23,6 +23,7 @@ from .mcsm_api import (
     update_instance,
     get_instance_logs,
 )
+from .image import panel_info_img
 from .utils import get_index, get_indexs
 
 panel_info = on_command("面板信息", permission=SUPERUSER)
@@ -44,9 +45,8 @@ async def _():
     # 正常返回对象，异常返回int
     if isinstance(panel, int):
         await node_show_list.finish(f"节点查询失败,错误码{panel}")
-    await node_show_list.finish(
-        f"面板版本：{panel.panel_version} Node版本:{panel.system_node_version}"
-    )
+    img = await panel_info_img(panel)
+    await node_show_list.finish(MessageSegment.image(img))
 
 
 # 获取节点列表

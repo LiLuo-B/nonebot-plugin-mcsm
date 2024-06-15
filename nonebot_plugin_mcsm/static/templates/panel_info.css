@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px; /* Ensure a maximum width for the container */
+}
+
+.top-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.bottom-card {
+    width: 100%;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.small-card {
+    min-width: 250px; /* Ensure a minimum width for small cards */
+    max-width: 1fr; /* Ensure small cards take the full width of their grid cell */
+}
+
+.large-card {
+    width: 1fr; /* Make large card take the full width */
+}
+
+.card-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.card-body {
+    text-align: left;
+}
+
+.description {
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.count {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.data-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.data-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 30%;
+}
+
+.data-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-weight: bold;
+    color: #333;
+}
+
+.value {
+    color: #555;
+}
