@@ -14,7 +14,7 @@ body {
     background: rgba(255, 255, 255, 0.85);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 80%;
+    width: 90%;
     max-width: 1200px;
     overflow: hidden;
 }
@@ -23,14 +23,25 @@ body {
     padding: 20px;
 }
 
+.green-font {
+    color: #73D13D;
+}
+
+.red-font {
+    color: #FF4D4F;
+}
+
+
 table {
     width: 100%;
     border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
     padding: 15px;
     text-align: left;
+
 }
 
 th {
@@ -38,8 +49,13 @@ th {
     font-weight: bold;
 }
 
+
 td {
     border-bottom: 1px solid #ddd;
+}
+
+td img {
+    vertical-align: middle;
 }
 
 tr:hover {

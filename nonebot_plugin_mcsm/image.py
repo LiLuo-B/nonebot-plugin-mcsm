@@ -31,7 +31,7 @@ async def panel_info_img(panel_info: Panel_Info) -> bytes:
 async def node_info_img(node_list: List[Node_Info]) -> bytes:
     template = env.get_template("node_list.html")
     html = await template.render_async(
-        resources_path=f"file://{resources_path}", panel_info=node_list
+        resources_path=f"file://{resources_path}", node_list=node_list
     )
     return await html_to_pic(
         html,

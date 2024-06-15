@@ -8,8 +8,8 @@ class Node_Info:
     connection_address: str
     status: bool
     cpu_usage: Optional[str] = None
-    free_memory: Optional[float] = None
-    total_memory: Optional[float] = None
+    usage_memory: Optional[str] = None
+    total_memory: Optional[str] = None
     online_instance: Optional[int] = None
     total_instance: Optional[int] = None
     daemon_id: str
@@ -25,11 +25,14 @@ class Node_Info:
         self.remark = data["remarks"] if data["remarks"] else "localhost"
         if self.status == True:
             self.cpu_usage = "{:.1f}%".format(data["system"]["cpuUsage"] * 100)
-            self.free_memory = (
-                round(data["system"]["freemem"] / 1024 / 1024 / 1024 * 10, 1) / 10
+            self.usage_memory = "{:.1f}G".format(
+                (data["system"]["totalmem"] - data["system"]["freemem"])
+                / 1024
+                / 1024
+                / 1024
             )
-            self.total_memory = (
-                round(data["system"]["totalmem"] / 1024 / 1024 / 1024 * 10, 1) / 10
+            self.total_memory = "{:.1f}G".format(
+                data["system"]["totalmem"] / 1024 / 1024 / 1024
             )
             self.online_instance = data["instance"]["running"]
             self.total_instance = data["instance"]["total"]
