@@ -1,6 +1,7 @@
 from typing import Optional
-from datetime import timedelta
+from datetime import timedelta, datetime
 import time
+from .utils import parse_date
 
 
 class Node_Info:
@@ -116,7 +117,10 @@ class Instance_Info:
     stop_command: str
     update_command: str
     instance_path: str
+    create_time: str
     last_run_time: str
+    auto_restart: bool
+    auto_start: bool
     run_time: Optional[str] = None
     cpu_usage: Optional[str] = None
     memory_usage: Optional[float] = None
@@ -131,10 +135,21 @@ class Instance_Info:
         self.stop_command = data["config"]["stopCommand"]
         self.update_command = data["config"]["updateCommand"]
         self.instance_path = data["config"]["cwd"]
+        if isinstance(data["config"]["createDatetime"], int):
+            self.create_time = time.strftime(
+                "%Y-%m-%d  %H:%M:%S",
+                time.localtime(data["config"]["createDatetime"] / 1000),
+            )
+        else:
+            self.create_time = parse_date(data["config"]["createDatetime"]).strftime(
+                "%Y-%m-%d"
+            )
         self.last_run_time = time.strftime(
             "%Y-%m-%d  %H:%M:%S",
             time.localtime(data["config"]["lastDatetime"] / 1000),
         )
+        self.auto_restart = data["config"]["eventTask"]["autoRestart"]
+        self.auto_start = data["config"]["eventTask"]["autoStart"]
         if detail == True:
             self.run_time = timedelta(
                 seconds=int(data["processInfo"]["elapsed"] / 1000)

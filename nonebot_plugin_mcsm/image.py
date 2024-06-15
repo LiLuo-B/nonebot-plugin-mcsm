@@ -28,10 +28,23 @@ async def panel_info_img(panel_info: Panel_Info) -> bytes:
     )
 
 
-async def node_info_img(node_list: List[Node_Info]) -> bytes:
+async def node_list_img(node_list: List[Node_Info]) -> bytes:
     template = env.get_template("node_list.html")
     html = await template.render_async(
         resources_path=f"file://{resources_path}", node_list=node_list
+    )
+    return await html_to_pic(
+        html,
+        wait=0,
+        viewport={"width": 1360, "height": 700},
+        type="jpeg",
+    )
+
+
+async def instance_list_img(instance_list: List[Instance_Info]) -> bytes:
+    template = env.get_template("instance_list.html")
+    html = await template.render_async(
+        resources_path=f"file://{resources_path}", instance_list=instance_list
     )
     return await html_to_pic(
         html,

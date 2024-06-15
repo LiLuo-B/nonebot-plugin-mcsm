@@ -19,7 +19,7 @@ from .mcsm_api import (
     update_instance,
     get_instance_logs,
 )
-from .image import panel_info_img,node_info_img
+from .image import panel_info_img, node_list_img, instance_list_img
 from .utils import get_index, get_indexs
 
 panel_info = on_command("面板信息", permission=SUPERUSER)
@@ -52,7 +52,7 @@ async def _():
     # 正常返回对象，异常返回int
     if isinstance(nodes, int):
         await node_show_list.finish(f"节点查询失败,错误码{nodes}")
-    img=await node_info_img(nodes)
+    img = await node_list_img(nodes)
     await node_show_list.finish(MessageSegment.image(img))
 
 
@@ -80,11 +80,8 @@ async def _(args: Message = CommandArg()):
         # 正常返回对象，异常返回int
         if isinstance(instances, int):
             await instance_show_list.finish(f"实例查询失败，错误码{instances}")
-        for instance in instances:
-            await instance_show_list.send(
-                f"序号：{instance.index} 备注：{instance.instance_name} 状态：{instance.instance_status} 启动命令：{instance.start_command} 停止命令：{instance.stop_command} 更新命令：{instance.update_command}"
-            )
-        await instance_show_list.finish()
+        img = await instance_list_img(instances)
+        await instance_show_list.finish(MessageSegment.image(img))
     await instance_show_list.finish("未查到该ID对应的节点")
 
 
@@ -107,11 +104,8 @@ async def _(event: MessageEvent):
         if isinstance(instances, int):
             await instance_show_list.finish(f"查询失败，返回码{instances}")
             # 遍历节点列表查询index对应的实例instance_id
-        for instance in instances:
-            await instance_show_list.send(
-                f"序号：{instance.index} 备注：{instance.instance_name} 状态：{instance.instance_status} 启动命令：{instance.start_command} 停止命令：{instance.stop_command} 更新命令：{instance.update_command}"
-            )
-        await instance_show_list.finish()
+        img = await instance_list_img(instances)
+        await instance_show_list.finish(img)
     await instance_show_list.finish("未查到该ID对应的节点")
 
 
