@@ -1,12 +1,11 @@
 from pydantic import BaseModel
-from pathlib import Path
 from nonebot import get_plugin_config
 
 
 class Config(BaseModel):
     mcsm_api_key: str
     mcsm_url: str
-    mcsm_log_size: int
+    mcsm_log_size: int = 1024
     mcsm_img_path: str
 
 

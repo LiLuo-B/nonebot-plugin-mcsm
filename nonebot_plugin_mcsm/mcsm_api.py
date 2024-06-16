@@ -1,4 +1,3 @@
-import asyncio
 import httpx
 from typing import Union, List, Tuple
 from .config import plugin_config

@@ -1,5 +1,5 @@
 from typing import Optional
-from datetime import timedelta, datetime
+from datetime import timedelta
 import time
 from .utils import parse_date
 
