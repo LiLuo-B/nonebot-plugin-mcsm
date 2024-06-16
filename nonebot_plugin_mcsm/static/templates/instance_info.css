@@ -24,9 +24,6 @@ body {
     gap: 20px;
 }
 
-/* .section {
-    padding: 20px;
-} */
 
 h3 {
     color: #555;
@@ -34,6 +31,18 @@ h3 {
     border-bottom: 3px solid #000;
     padding-bottom: 5px;
     margin-bottom: 5px;
+}
+
+.green-font {
+    color: #73D13D;
+}
+
+.red-font {
+    color: #FF4D4F;
+}
+
+.gray-font {
+    color: #939395;
 }
 
 .info p,

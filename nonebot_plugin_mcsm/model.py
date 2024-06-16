@@ -119,8 +119,13 @@ class Instance_Info:
     instance_path: str
     create_time: str
     last_run_time: str
+    end_time: str
     auto_restart: bool
     auto_start: bool
+    start_time: int
+    input_code: str
+    output_code: str
+    instance_type: str
     run_time: Optional[str] = None
     cpu_usage: Optional[str] = None
     memory_usage: Optional[float] = None
@@ -148,8 +153,13 @@ class Instance_Info:
             "%Y-%m-%d  %H:%M:%S",
             time.localtime(data["config"]["lastDatetime"] / 1000),
         )
+        self.end_time = data["config"]["endTime"]
         self.auto_restart = data["config"]["eventTask"]["autoRestart"]
         self.auto_start = data["config"]["eventTask"]["autoStart"]
+        self.start_time = data["started"]
+        self.input_code = str(data["config"]["ie"]).upper()
+        self.output_code = str(data["config"]["oe"]).upper()
+        self.instance_type = data["config"]["type"]
         if detail == True:
             self.run_time = timedelta(
                 seconds=int(data["processInfo"]["elapsed"] / 1000)

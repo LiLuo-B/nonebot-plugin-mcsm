@@ -15,7 +15,7 @@ body {
     align-items: center;
     gap: 20px;
     width: 90%;
-    max-width: 1200px; /* Ensure a maximum width for the container */
+    max-width: 1200px;
 }
 
 .top-cards {
@@ -37,12 +37,12 @@ body {
 }
 
 .small-card {
-    min-width: 250px; /* Ensure a minimum width for small cards */
-    max-width: 1fr; /* Ensure small cards take the full width of their grid cell */
+    min-width: 250px; 
+    max-width: 1fr; 
 }
 
 .large-card {
-    width: 1fr; /* Make large card take the full width */
+    width: 1fr;
 }
 
 .card-header {
