@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{resources_path}}/templates/instance_info.css"">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class=" container">
+    <div class="section">
+        <h3>基本信息</h3>
+        <div class="info">
+            <p><strong>名称：</strong>求生查服 NoneBot2</p>
+            <p><strong>类型：</strong>通用控制台程序</p>
+            <p><strong>状态：</strong><span class="status">🟢 运行中</span> <strong>启动次数：</strong>2</p>
+            <p><strong>最后启动：</strong>2024-06-16 12:06:48</p>
+            <p><strong>到期时间：</strong></p>
+            <p><strong>创建时间：</strong>2024-04-09 00:00:00</p>
+            <p><strong>输出编码：</strong>UTF8 <strong>输入编码：</strong>UTF8</p>
+        </div>
+    </div>
+    <div class="section">
+        <h3>事件任务</h3>
+        <div class="task">
+            <div class="task-header">自动重启</div>
+            <div class="task-body">
+                <p>若实例状态在未经面板操作的情况下变为非运行状态将立刻发起启动实例操作。可用于崩溃后自动重启功能。</p>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="task">
+            <div class="task-header">自动启动</div>
+            <div class="task-body">
+                <p>只要远程节点（远程节点）运行，就自动发起一次启动实例操作。如果将远程节点机自启则可用于开机自动实例。</p>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <h3>进程监控</h3>
+        <div class="info">
+            <p><strong>PID：</strong>12345</p>
+            <p><strong>CPU：</strong>0.2%</p>
+            <p><strong>内存：</strong>4G</p>
+        </div>
+    </div>
+    <div class="section">
+        <h3>实例设置</h3>
+        <div class="info">
+            <p><strong>启动命令：</strong>nb run</p>
+            <p><strong>停止命令：</strong>^C</p>
+            <p><strong>更新目录：</strong>/root/Bot/NoneBot/RUS1022</p>
+            <p><strong>工作路径：</strong>/root/Bot/NoneBot</p>
+        </div>
+    </div>
+    </div>
+    </body>
+
+</html>

@@ -19,7 +19,7 @@ from .mcsm_api import (
     update_instance,
     get_instance_logs,
 )
-from .image import panel_info_img, node_list_img, instance_list_img
+from .image import panel_info_img, node_list_img, instance_list_img, instance_info_img
 from .utils import get_index, get_indexs
 
 panel_info = on_command("面板信息", permission=SUPERUSER)
@@ -147,7 +147,8 @@ async def _(args: Message = CommandArg()):
             instance = await get_instance_info(node.daemon_id, instance.instance_id)
             if isinstance(instance, int):
                 await instance_info.finish(f"查询失败，返回码{instance}")
-            await instance_info.finish(f"实例信息：{instance.last_run_time}")
+            img = await instance_info_img(instance)
+            await instance_show_list.finish(MessageSegment.image(img))
         await instance_info.finish("未查到该ID对应的实例")
     await instance_info.finish("未查到该ID对应的节点")
 
@@ -185,7 +186,8 @@ async def _(state: T_State, event: MessageEvent):
         instance = await get_instance_info(daemon_id, instance.instance_id)
         if isinstance(instance, int):
             await instance_info.finish(f"查询失败，返回码{instance}")
-        await instance_info.finish(f"实例信息：{instance.last_run_time}")
+        img = await instance_info_img(instance)
+        await instance_show_list.finish(MessageSegment.image(img))
     await instance_info.finish("未查到该ID对应的实例")
 
 

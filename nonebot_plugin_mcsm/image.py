@@ -58,3 +58,19 @@ async def instance_list_img(instance_list: List[Instance_Info]) -> bytes:
         },
         type="jpeg",
     )
+
+
+async def instance_info_img(instance_info: Instance_Info) -> bytes:
+    template = env.get_template("instance_info.html")
+    html = await template.render_async(
+        resources_path=f"file://{resources_path}", instance_info=instance_info
+    )
+    return await html_to_pic(
+        html,
+        wait=0,
+        viewport={
+            "width": 1360,
+            "height": 700,
+        },
+        type="jpeg",
+    )
