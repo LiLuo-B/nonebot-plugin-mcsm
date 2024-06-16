@@ -21,6 +21,48 @@
                     <th>开机自启</th>
                     <th>实例状态</th>
                 </tr>
+                {% for instance in instance_list%}
+                <tr>
+                    <td>{{ instance.index }}</td>
+                    <td>{{ instance.instance_name }}</td>
+                    <td>{{ instance.create_time }}</td>
+                    <td>{{ instance.last_run_time }}</td>
+                    <td> <label class="switch">
+                            {% if instance.auto_restart == True %}
+                            <input type="checkbox" checked>
+                            {% else %}
+                            <input type="checkbox">
+                            {% endif %}
+                            <span class="slider"></span>
+                        </label>
+                    </td>
+                    <td> <label class="switch">
+                            {% if instance.auto_start == True %}
+                            <input type="checkbox" checked>
+                            {% else %}
+                            <input type="checkbox">
+                            {% endif %}
+                            <span class="slider"></span>
+                        </label>
+                    </td>
+                    <td>
+                        {% if instance.instance_status==3 %}
+                        <img src="{{resources_path}}/icons/check-circle.svg" alt="SVG Icon"> <span
+                            class="green-font">运行中</span>
+                        {% elif instance.instance_status==-1 %}
+                        <img src="{{resources_path}}/icons/check-info.svg" alt="SVG Icon"> <span>维护中</span>
+                        {% elif instance.instance_status==0 %}
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSJub25lIi8+PC9zdmc+"
+                            alt="Placeholder">
+                        <span class="gray-font">未运行</span>
+                        {% elif instance.instance_status==1 %}
+                        <img src="{{resources_path}}/icons/check-info.svg" alt="SVG Icon"> <span>停止中</span>
+                        {% else %}
+                        <img src="{{resources_path}}/icons/check-info.svg" alt="SVG Icon"> <span>启动中</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
             </thead>
             <tbody>
             </tbody>

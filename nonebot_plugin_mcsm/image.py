@@ -36,7 +36,10 @@ async def node_list_img(node_list: List[Node_Info]) -> bytes:
     return await html_to_pic(
         html,
         wait=0,
-        viewport={"width": 1360, "height": 700},
+        viewport={
+            "width": 1360,
+            "height": 70 + 70 + 20 + 20 + 54 + 57 * len(node_list),
+        },
         type="jpeg",
     )
 
@@ -49,6 +52,9 @@ async def instance_list_img(instance_list: List[Instance_Info]) -> bytes:
     return await html_to_pic(
         html,
         wait=0,
-        viewport={"width": 1360, "height": 700},
+        viewport={
+            "width": 1360,
+            "height": 70 + 70 + 20 + 20 + 54 + 57 * len(instance_list),
+        },
         type="jpeg",
     )

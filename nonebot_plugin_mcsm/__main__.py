@@ -105,7 +105,7 @@ async def _(event: MessageEvent):
             await instance_show_list.finish(f"查询失败，返回码{instances}")
             # 遍历节点列表查询index对应的实例instance_id
         img = await instance_list_img(instances)
-        await instance_show_list.finish(img)
+        await instance_show_list.finish(MessageSegment.image(img))
     await instance_show_list.finish("未查到该ID对应的节点")
 
 
