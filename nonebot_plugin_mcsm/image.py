@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List
 import jinja2
 from .model import Instance_Info, Panel_Info, Node_Info
+from .config import plugin_config
 
 require("nonebot_plugin_htmlrender")
 from nonebot_plugin_htmlrender import html_to_pic
@@ -18,7 +19,9 @@ env = jinja2.Environment(
 async def panel_info_img(panel_info: Panel_Info) -> bytes:
     template = env.get_template("panel_info.html")
     html = await template.render_async(
-        resources_path=f"file://{resources_path}", panel_info=panel_info
+        resources_path=f"file://{resources_path}",
+        panel_info=panel_info,
+        img_path=plugin_config.mcsm_img_path,
     )
     return await html_to_pic(
         html,
@@ -31,7 +34,9 @@ async def panel_info_img(panel_info: Panel_Info) -> bytes:
 async def node_list_img(node_list: List[Node_Info]) -> bytes:
     template = env.get_template("node_list.html")
     html = await template.render_async(
-        resources_path=f"file://{resources_path}", node_list=node_list
+        resources_path=f"file://{resources_path}",
+        node_list=node_list,
+        img_path=plugin_config.mcsm_img_path,
     )
     return await html_to_pic(
         html,
@@ -47,7 +52,9 @@ async def node_list_img(node_list: List[Node_Info]) -> bytes:
 async def instance_list_img(instance_list: List[Instance_Info]) -> bytes:
     template = env.get_template("instance_list.html")
     html = await template.render_async(
-        resources_path=f"file://{resources_path}", instance_list=instance_list
+        resources_path=f"file://{resources_path}",
+        instance_list=instance_list,
+        img_path=plugin_config.mcsm_img_path,
     )
     return await html_to_pic(
         html,
@@ -63,7 +70,9 @@ async def instance_list_img(instance_list: List[Instance_Info]) -> bytes:
 async def instance_info_img(instance_info: Instance_Info) -> bytes:
     template = env.get_template("instance_info.html")
     html = await template.render_async(
-        resources_path=f"file://{resources_path}", instance_info=instance_info
+        resources_path=f"file://{resources_path}",
+        instance_info=instance_info,
+        img_path=plugin_config.mcsm_img_path,
     )
     return await html_to_pic(
         html,
