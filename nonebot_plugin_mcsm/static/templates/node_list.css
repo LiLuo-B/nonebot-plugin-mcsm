@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: no-repeat center center fixed;
+    background-size: cover;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 1200px;
+    overflow: hidden;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.green-font {
+    color: #73D13D;
+}
+
+.red-font {
+    color: #FF4D4F;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: left;
+
+}
+
+th {
+    background: rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
+
+td {
+    border-bottom: 1px solid #ddd;
+}
+
+td img {
+    vertical-align: middle;
+}
+
+tr:hover {
+    background: rgba(0, 0, 0, 0.05);
+}

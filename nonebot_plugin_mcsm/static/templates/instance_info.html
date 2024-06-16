@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{resources_path}}/templates/instance_info.css"">
+</head>
+<body style=" background: url({{img_path}});">
+    <div class=" container">
+        <div class="section">
+            <h3>基本信息</h3>
+            <div class="info">
+                <p><strong>名称：</strong>{{ instance_info.instance_name }}</p>
+                <p><strong>类型：</strong>{{ instance_info.instance_type }}</p>
+                <p><strong>状态：</strong>
+                    {% if instance_info.instance_status==3 %}
+                    <span class="green-font">🟢 运行中</span>
+                    {% elif instance_info.instance_status==-1 %}
+                    <span class="red-font">🔴维护中</span>
+                    {% elif instance_info.instance_status==0 %}
+                    <span class="gray-font">🔘未运行</span>
+                    {% elif instance_info.instance_status==1 %}
+                    <span>🔘停止中</span>
+                    {% else %}
+                    <span>🔘启动中</span>
+                    {% endif %}
+                    <strong> 启动次数：</strong>{{ instance_info.start_time
+                    }}
+                </p>
+                <p><strong>最后启动：</strong>{{ instance_info.last_run_time }}</p>
+                <p><strong>创建时间：</strong>{{ instance_info.create_time }}</p>
+                <p><strong>到期时间：</strong>{{ instance_info.end_time }}</p>
+                <p><strong>输出编码：</strong>{{ instance_info.input_code }} <strong> 输入编码：</strong>{{
+                    instance_info.output_code
+                    }}
+                </p>
+            </div>
+        </div>
+        <div class="section">
+            <h3>事件任务</h3>
+            <div class="task">
+                <div class="task-header">自动重启</div>
+                <div class="task-body">
+                    <p>若实例状态在未经面板操作的情况下变为非运行状态将立刻发起启动实例操作。可用于崩溃后自动重启功能。</p>
+                    <label class="switch">
+                        {% if instance_info.auto_restart==True %}
+                        <input type="checkbox" checked>
+                        {% else %}
+                        <input type="checkbox">
+                        {% endif %}
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="task">
+                <div class="task-header">自动启动</div>
+                <div class="task-body">
+                    <p>只要远程节点（远程节点）运行，就自动发起一次启动实例操作。如果将远程节点机自启则可用于开机自动实例。</p>
+                    <label class="switch">
+                        {% if instance_info.auto_start==True %}
+                        <input type="checkbox" checked>
+                        {% else %}
+                        <input type="checkbox">
+                        {% endif %}
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <h3>进程监控</h3>
+            <div class="info">
+                <p><strong>PID：</strong>{{ instance_info.pid }}</p>
+                <p><strong>CPU：</strong>{{ instance_info.cpu_usage }}</p>
+                <p><strong>内存：</strong>{{ instance_info.memory_usage }}G</p>
+            </div>
+        </div>
+        <div class="section">
+            <h3>实例设置</h3>
+            <div class="info">
+                <p><strong>启动命令：</strong>{{ instance_info.start_command }}</p>
+                <p><strong>停止命令：</strong>{{ instance_info.stop_command }}</p>
+                <p><strong>更新命令：</strong>{{ instance_info.update_command }}</p>
+                <p><strong>工作目录：</strong>{{ instance_info.instance_path }}</p>
+            </div>
+        </div>
+    </div>
+    </body>
+
+</html>

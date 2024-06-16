@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{resources_path}}/templates/panel_info.css">
+</head>
+
+<body style=" background: url({{img_path}});">
+    <div class="main-container">
+        <div class="top-cards">
+            <div class="card small-card">
+                <div class="card-header">节点在线数</div>
+                <div class="card-body">
+                    <div class="description">在线节点 / 总节点</div>
+                    <div class="count">{{panel_info.node_online_count}}/{{panel_info.node_total_count}}</div>
+                </div>
+            </div>
+            <div class="card small-card">
+                <div class="card-header">实例运行状态</div>
+                <div class="card-body">
+                    <div class="description">正在运行数 / 全部实例总数</div>
+                    <div class="count">{{panel_info.instance_online_count}}/{{panel_info.instance_total_count}}</div>
+
+                </div>
+            </div>
+            <div class="card small-card">
+                <div class="card-header">系统资源信息</div>
+                <div class="card-body">
+                    <div class="description">面板主机 CPU，RAM 使用率</div>
+                    <div class="count">{{panel_info.system_cpu_usage}}
+                        {{panel_info.system_memory_usage_percent}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-card">
+            <div class="card large-card">
+                <div class="card-header">数据总览</div>
+                <div class="card-body">
+                    <div class="data-row">
+                        <div class="data-column">
+                            <div class="data-item">
+                                <span class="label">运行时间</span>
+                                <span class="value">{{panel_info.system_run_time}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">系统时间</span>
+                                <span class="value">{{panel_info.system_time}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">系统类型</span>
+                                <span class="value">{{panel_info.system_type}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">系统版本</span>
+                                <span class="value">{{panel_info.system_version}}</span>
+                            </div>
+                        </div>
+                        <div class="data-column">
+                            <div class="data-item">
+                                <span class="label">Node 环境版本</span>
+                                <span class="value">{{panel_info.system_node_version}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">面板版本</span>
+                                <span class="value">{{panel_info.panel_version}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">系统节点版本</span>
+                                <span class="value">{{panel_info.system_daemon_version}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">内存</span>
+                                <span class="value">{{panel_info.system_memory_usage}}</span>
+                            </div>
+                        </div>
+                        <div class="data-column">
+                            <div class="data-item">
+                                <span class="label">面板端使用内存量</span>
+                                <span class="value">{{panel_info.panel_memory_usage}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">面板端CPU占比</span>
+                                <span class="value">{{panel_info.panel_cpu_usage}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">主机名</span>
+                                <span class="value">{{panel_info.system_host_name}}</span>
+                            </div>
+                            <div class="data-item">
+                                <span class="label">进程用户名</span>
+                                <span class="value">{{panel_info.system_user_name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>
