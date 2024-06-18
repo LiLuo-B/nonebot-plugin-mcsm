@@ -9,5 +9,5 @@ __plugin_meta__ = PluginMetadata(
     type="application",
     homepage="https://github.com/LiLuo-B/nonebot-plugin-mcsm",
     config=Config,
-    supported_adapters={"~onebot.v11"},
+    supported_adapters=None,
 )

@@ -10,4 +10,3 @@ class Config(BaseModel):
 
 
 plugin_config = get_plugin_config(Config)
-print(plugin_config.mcsm_img_path)

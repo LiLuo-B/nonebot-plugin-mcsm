@@ -153,7 +153,7 @@ class Instance_Info:
             "%Y-%m-%d  %H:%M:%S",
             time.localtime(data["config"]["lastDatetime"] / 1000),
         )
-        self.end_time = data["config"]["endTime"]
+        self.end_time = "" if data["config"]["endTime"]==0 else data["config"]["endTime"]
         self.auto_restart = data["config"]["eventTask"]["autoRestart"]
         self.auto_start = data["config"]["eventTask"]["autoStart"]
         self.start_time = data["started"]

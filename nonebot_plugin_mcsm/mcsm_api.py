@@ -104,7 +104,7 @@ async def stop_instance(daemonid: str, instanceid: str) -> Tuple[int, str]:
 
 
 # 终止实例 返回返回码与文本
-async def kill_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
+async def kill_instance(daemonid: str, instanceid: str) -> Tuple[int, str]:
     url = f"{panel_address}/api/protected_instance/kill"
     params = {
         "uuid": instanceid,
@@ -118,7 +118,7 @@ async def kill_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
 
 
 # 重启实例 返回返回码与文本
-async def restart_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
+async def restart_instance(daemonid: str, instanceid: str) -> Tuple[int, str]:
     url = f"{panel_address}/api/protected_instance/restart"
     params = {
         "uuid": instanceid,
@@ -132,7 +132,7 @@ async def restart_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
 
 
 # 更新实例 返回返回码与文本
-async def update_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
+async def update_instance(daemonid: str, instanceid: str) -> Tuple[int, str]:
     url = f"{panel_address}/api/protected_instance/asynchronous"
     params = {
         "uuid": instanceid,
@@ -147,7 +147,7 @@ async def update_instance(daemonid: str, instanceid: str) -> Tuple[bool, int]:
 
 
 # 获取实例日志 返回返回码与文本
-async def get_instance_logs(daemonid: str, instanceid: str) -> Tuple[bool, int]:
+async def get_instance_logs(daemonid: str, instanceid: str) -> Tuple[int, str]:
     url = f"{panel_address}/api/protected_instance/outputlog"
     params = {
         "uuid": instanceid,
