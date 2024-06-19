@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-mcsm"
-version = "0.2.0"
+version = "0.2.1"
 description = "nonebot-plugin-mcsm"
 readme = "README.md"
 requires-python = ">=3.8, <4.0"
@@ -10,7 +10,7 @@ plugins = ["nonebot_plugin_mcsm"]
 
 [tool.poetry]
 name = "nonebot-plugin-mcsm"
-version = "0.2.0"
+version = "0.2.1"
 description = "MCSM plugin for NoneBot2"
 authors = ["LiLuo-B"]
 license = "GPLv3"
