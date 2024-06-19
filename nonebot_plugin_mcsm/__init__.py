@@ -1,4 +1,4 @@
-from nonebot.plugin import PluginMetadata
+from nonebot.plugin import PluginMetadata, inherit_supported_adapters
 from . import __main__ as __main__
 from .config import Config
 
@@ -9,5 +9,5 @@ __plugin_meta__ = PluginMetadata(
     type="application",
     homepage="https://github.com/LiLuo-B/nonebot-plugin-mcsm",
     config=Config,
-    supported_adapters=None,
+    supported_adapters=inherit_supported_adapters("nonebot_plugin_alconna"),
 )
