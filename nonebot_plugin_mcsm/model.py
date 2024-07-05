@@ -1,5 +1,5 @@
 from typing import Optional
-from datetime import timedelta
+from datetime import timedelta, datetime
 import time
 from .utils import parse_date
 
@@ -89,10 +89,8 @@ class Panel_Info:
         self.system_node_version = data["system"]["node"]
         self.system_host_name = data["system"]["hostname"]
         self.system_user_name = data["system"]["user"]["username"]
-        self.system_time = time.strftime(
-            "%Y/%m/%d  %H:%M:%S",
-            time.localtime(data["system"]["time"] / 1000),
-        )
+        now = datetime.now()
+        self.system_time = now.strftime("%Y/%m/%d %H:%M:%S")
         self.system_run_time = timedelta(seconds=int(data["system"]["uptime"]))
         self.node_online_count = data["remoteCount"]["available"]
         self.node_total_count = data["remoteCount"]["total"]
